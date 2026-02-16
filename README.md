@@ -1,1 +1,1 @@
-# Spor-Salonu-ve-Tesis-Y-netim-Sistemi
+# Spor-Salonu-ve-Tesis-Yonetim-Sistemi
