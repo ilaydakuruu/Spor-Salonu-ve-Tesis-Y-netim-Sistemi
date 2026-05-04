@@ -1,4 +1,5 @@
 SPOR SALONU VE TESİS YÖNETİM SİSTEMİ
+
 🚀 Motivasyon Nedir?
 Bu projenin motivasyonu, spor salonu işletmelerindeki üyelik ve tesis yönetim süreçlerinin günümüzde hâlâ büyük oranda manuel veya karmaşık yöntemlerle yürütülmesinden kaynaklanmaktadır. Fiziksel kayıt tutma yöntemleri; ödeme takibinin zorlaşması, randevu çakışmaları ve üyelik sürelerinin kontrol edilememesi gibi sorunlara yol açabilmektedir.
 
