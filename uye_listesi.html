@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Datariders - Üye Yönetimi</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        h2 { color: #1a73e8; border-bottom: 2px solid #1a73e8; padding-bottom: 10px; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f8f9fa; color: #333; }
+        tr:hover { background-color: #f1f4f9; }
+
+        /* Kiralama Bilgisi Tasarımı */
+        .rental-badge {
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            padding: 8px 30px 8px 10px; /* Sağdan boşluk bıraktık çarpı için */
+            border-radius: 6px;
+            font-size: 11px;
+            margin-bottom: 6px;
+            display: block;
+            border-left: 3px solid #1a73e8;
+            position: relative; /* Çarpı butonunu konumlandırmak için */
+        }
+
+        .btn-kira-sil {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #d93025;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .btn-kira-sil:hover { color: #a50e0e; transform: translateY(-50%) scale(1.2); }
+
+        .no-rental { color: #999; font-size: 12px; font-style: italic; }
+
+        /* Silme Butonu Tasarımı */
+        .btn-sil {
+            background-color: #d93025;
+            color: white;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-sil:hover {
+            background-color: #a50e0e;
+            box-shadow: 0 2px 5px rgba(217, 48, 37, 0.4);
+        }
+
+        .back-link { display: inline-block; margin-bottom: 20px; color: #1a73e8; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="/yonetim-merkezi" class="back-link">← Panel Ana Sayfasına Dön</a>
+    <h2>Kayıtlı Üyeler Listesi</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>İsim Soyisim</th>
+                <th>Telefon</th>
+                <th>Seçili Paket</th>
+                <th>Ders Durumu</th>
+                <th>Kiralık Sahalar</th>
+                <th style="text-align: center;">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for veri in uyeler_listesi %}
+            <tr>
+                <td>{{ veri.detay['Id'] }}</td>
+                <td>{{ veri.detay['Isim'] }} {{ veri.detay['Soyisim'] }}</td>
+                <td>{{ veri.detay['Telefon'] }}</td>
+                <td>{{ veri.detay['Secili_Paket'] }}</td>
+                <td>{{ veri.detay['Alinan_Ders'] }}</td>
+                <td>
+                    {% for kira in veri.kiralamalar %}
+                        <div class="rental-badge">
+                            <b>{{ kira['Saha_Tipi'] }}</b><br>
+                            {{ kira['Tarih'] }} | {{ kira['Saat'] }}
+                            <a href="/kiralama-iptal/{{ kira['Id'] }}/{{ veri.detay['Id'] }}"
+                               class="btn-kira-sil"
+                               title="Kiralama İptal Et"
+                               onclick="return confirm('Bu kiralama kaydını silmek istediğinize emin misiniz?')">
+                               ×
+                            </a>
+                        </div>
+                    {% else %}
+                        <span class="no-rental">Kiralama yok</span>
+                    {% endfor %}
+                </td>
+                <td style="text-align: center;">
+                    <a href="{{ url_for('uye_sil', id=veri.detay['Id']) }}"
+                       class="btn-sil"
+                       onclick="return confirm('{{ veri.detay['Isim'] }} {{ veri.detay['Soyisim'] }} isimli üyeyi silmek istediğinize emin misiniz?')">
+                       Üyeliği Sil
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if not uyeler_listesi %}
+        <p style="text-align: center; color: #666; margin-top: 20px;">Henüz kayıtlı üye bulunmamaktadır.</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Giriş Formu</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f8f9fa; }
+        .form-kutu { background: white; padding: 35px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 300px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .btn-gonder { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <div class="form-kutu">
+        <h2 style="text-transform: capitalize;">{{ tur }} Girişi</h2>
+        <form method="POST">
+            <input type="text" name="username" placeholder="Telefon Numaranız (05xx)" required>
+            <input type="password" name="password" placeholder="Şifreniz" required>
+            <button type="submit" class="btn-gonder">Giriş Yap</button>
+        </form>
+        <br>
+        <a href="/login-secim" style="color: #666; font-size: 14px;">Geri Dön</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Giriş Seçimi</title>
+    <style>
+        body { font-family: sans-serif; background-color: #e9ecef; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .secim-kutu { background: white; padding: 50px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); text-align: center; }
+        .buton { display: block; width: 220px; padding: 15px; margin: 15px auto; text-decoration: none; border-radius: 5px; color: white; font-weight: bold; }
+        .btn-uye { background-color: #007bff; }
+        .btn-admin { background-color: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="secim-kutu">
+        <h2>Kim Olarak Giriş Yapacaksınız?</h2>
+        <a href="/login/uye" class="buton btn-uye">🙋‍♂️ Üye Girişi</a>
+        <a href="/login/yonetici" class="buton btn-admin">👨‍💼 Yönetici Girişi</a>
+        <br>
+        <a href="/" style="color: #666; text-decoration: none;">← Ana Sayfaya Dön</a>
+    </div>
+</body>
+</html>
