@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Datariders - Üye Kayıt</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 50px; }
+        .register-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 400px; }
+        h2 { color: #1a73e8; text-align: center; }
+        .info-box { background: #e8f0fe; padding: 10px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; border-left: 5px solid #1a73e8; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .btn-kayit { background: #1a73e8; color: white; border: none; padding: 15px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold; }
+        .error-msg { color: #d93025; background: #fce8e6; padding: 10px; border-radius: 5px; margin-bottom: 10px; font-size: 14px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="register-card">
+        <h2>Yeni Üyelik Oluştur</h2>
+        <div class="info-box">
+            ✨ <b>Paket İçeriği:</b> Seçtiğiniz tüm paketlere Gym, Sauna ve Yüzme Havuzu kullanımı dahildir!
+        </div>
+
+        {% if hata %}
+            <div class="error-msg">⚠️ {{ hata }}</div>
+        {% endif %}
+
+        <form action="/uye-kayit" method="POST">
+            <input type="text" name="isim" placeholder="Adınız" required>
+            <input type="text" name="soyisim" placeholder="Soyadınız" required>
+            <input type="text" name="telefon" placeholder="Telefon Numaranız (Örn: 05xx)" required>
+
+            <label>Seçtiğiniz Paket:</label>
+            <select name="secili_paket">
+                <option value="3 Aylık">3 Aylık Paket (6000 TL)</option>
+                <option value="6 Aylık">6 Aylık Paket (10000 TL)</option>
+                <option value="12 Aylık">12 Aylık Paket (15000 TL)</option>
+            </select>
+
+            <input type="password" name="sifre" placeholder="Şifre Belirleyin" required>
+            <button type="submit" class="btn-kayit">Kaydı Tamamla</button>
+            <p style="font-size: 12px; color: #666;">* Giriş yaparken telefon numaranızı ve bu şifreyi kullanacaksınız.</p>
+        </form>
+    </div>
+</body>
+</html>

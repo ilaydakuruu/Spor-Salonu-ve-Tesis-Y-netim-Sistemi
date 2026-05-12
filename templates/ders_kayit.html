@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Datariders - Ders Kayıt</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; padding: 40px; margin: 0; }
+        .container { max-width: 900px; margin: auto; }
+
+        h2 { color: #111; margin-bottom: 30px; }
+
+        .ders-karti {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+        .ders-karti:hover { transform: translateY(-3px); }
+
+        .kontenjan-dolu { border-left: 6px solid #d93025; }
+        .kontenjan-musait { border-left: 6px solid #34a853; }
+
+        .info-section b { font-size: 20px; color: #000; text-transform: capitalize; }
+        .info-section span { color: #555; display: block; margin: 5px 0; }
+        .info-section small { color: #777; font-size: 14px; }
+
+        .action-section { text-align: right; }
+
+        /* BURASI KRİTİK: Fiyat sütunu */
+        .fiyat {
+            font-size: 22px;
+            color: #2d8e47;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .btn-kayit {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-kayit:hover { background: #1557b0; }
+
+        .btn-dolu {
+            background: #e0e0e0;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover { color: #1a73e8; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🏋️ Ders Programı ve Kayıt</h2>
+
+    {% for ders in dersler %}
+    <div class="ders-karti {% if ders['Doluluk'] >= ders['Kontenjan'] %}kontenjan-dolu{% else %}kontenjan-musait{% endif %}">
+        <div class="info-section">
+            <b>{{ ders['Ders_Adi'] }}</b> <br>
+            <span>👤 Eğitmen: {{ ders['Hoca_Adi'] }}</span>
+            <small>📅 {{ ders['Ders_Tarihi'] }} | 🕒 {{ ders['Ders_Saati'] }}</small> <br>
+            <small>👥 Kontenjan: {{ ders['Doluluk'] }} / {{ ders['Kontenjan'] }}</small>
+        </div>
+
+        <div class="action-section">
+            <div class="fiyat">{{ ders['Ucret'] }} TL</div>
+
+            <form method="POST">
+                <input type="hidden" name="ders_id" value="{{ ders['Id'] }}">
+                {% if ders['Doluluk'] >= ders['Kontenjan'] %}
+                    <button type="button" class="btn-kayit btn-dolu" disabled>KAYIT DOLU</button>
+                {% else %}
+                    <button type="submit" class="btn-kayit">Kayıt Ol</button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+
+    <a href="/uye-paneli/{{ uye_id }}" class="back-link">← Panele Geri Dön</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datariders - Üye Paneli</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
+        .welcome-header {
+            background: linear-gradient(135deg, #1a73e8, #0d47a1);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .panel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 300px;
+        }
+        .card:hover { transform: translateY(-5px); }
+        h3 { color: #1a73e8; border-bottom: 2px solid #f0f2f5; padding-bottom: 12px; margin-top: 0; font-size: 1.2rem; }
+        .list-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 13.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .rental-item { border-left: 4px solid #1a73e8; }
+        .lesson-item { border-left: 4px solid #34a853; }
+        .price-tag { color: #2e7d32; font-weight: bold; display: block; margin-top: 4px; }
+        .btn-mini-iptal {
+            color: #d93025;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 4px 8px;
+            border: 1px solid #d93025;
+            border-radius: 5px;
+            transition: 0.2s;
+        }
+        .btn-mini-iptal:hover { background: #d93025; color: white; }
+        .btn {
+            display: block; width: 100%; padding: 14px; text-align: center; border-radius: 10px;
+            text-decoration: none; font-weight: bold; margin-top: 10px; transition: 0.3s; box-sizing: border-box;
+        }
+        .btn-odeme { background: #fbbc05; color: #000; }
+        .btn-hizmet { background: #1a73e8; color: white; }
+        .btn-ders { background: #34a853; color: white; }
+        .btn-iptal {
+            background: transparent; color: #d93025; border: 1px solid #d93025;
+            max-width: 200px; margin: 40px auto 0;
+        }
+        .btn-iptal:hover { background: #d93025; color: white; }
+        .status-badge { background: #e8f0fe; color: #1a73e8; padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: bold; }
+        .scroll-area { max-height: 200px; overflow-y: auto; padding-right: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="welcome-header">
+        <div style="text-align: right;">
+            <a href="/logout" style="color: #ffcccc; text-decoration: none; font-weight: bold; font-size: 14px;">🚪 Güvenli Çıkış</a>
+        </div>
+        <h1>Hoş Geldin, {{ uye['Isim'] }} {{ uye['Soyisim'] }}! 👋</h1>
+        <p>Üyeliğiniz <b>{{ uye['Bitis_Tarihi'] }}</b> tarihine kadar aktiftir.</p>
+    </div>
+
+    <div class="panel-grid">
+        <div class="card">
+            <div>
+                <h3>📊 Üyelik Bilgileri</h3>
+                <div style="margin-bottom: 10px;"><b>Paket:</b> <span class="status-badge">{{ uye['Secili_Paket'] }}</span></div>
+                <p style="font-size: 14px; color: #666;">Aboneliğiniz üzerinden tesis tüm imkanlarından yararlanabilirsiniz.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div>
+                <h3>📅 Kiraladığım Sahalar</h3>
+                <div class="scroll-area">
+                    {% for kira in kiralamalar %}
+                    <div class="list-item rental-item">
+                        <div>
+                            <b>{{ kira['Saha_Tipi'] }}</b> <br>
+                            <small>{{ kira['Tarih'] }} | {{ kira['Saat'] }}</small>
+                        </div>
+                        <a href="/kiralama-iptal/{{ kira['Id'] }}/{{ uye['Id'] }}" class="btn-mini-iptal" onclick="return confirm('İptal edilsin mi?')">İptal</a>
+                    </div>
+                    {% else %}
+                    <p style="color: #888; font-size: 13px;">Kayıtlı saha bulunamadı.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div>
+                <h3>🏋️ Kayıtlı Derslerim</h3>
+                <div class="scroll-area">
+                    {% for ders in kayitli_dersler %}
+                    <div class="list-item lesson-item">
+                        <div>
+                            <b>{{ ders['Ders_Adi'] }}</b> <br>
+                            <small>{{ ders['Hoca_Adi'] }}</small> <br>
+                            <small>{{ ders['Ders_Tarihi'] }} | {{ ders['Ders_Saati'] }}</small>
+                            <span class="price-tag">{{ ders['Ucret'] }} TL</span>
+                        </div>
+                        <a href="/ders-iptal/{{ ders['Kayit_Id'] }}/{{ uye['Id'] }}" class="btn-mini-iptal" onclick="return confirm('İptal edilsin mi?')">İptal</a>
+                    </div>
+                    {% else %}
+                    <p style="color: #888; font-size: 13px;">Henüz dersiniz yok.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div>
+                <h3>🚀 Hızlı İşlemler</h3>
+                <a href="/uye-paneli/saha-kirala/{{ uye['Id'] }}" class="btn btn-hizmet">Saha Kirala</a>
+                <a href="/uye-paneli/ders-kayit/{{ uye['Id'] }}" class="btn btn-ders">Derslere Kayıt Ol</a>
+                <a href="/uye-paneli/odeme/{{ uye['Id'] }}" class="btn btn-odeme">Ödeme Yap</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

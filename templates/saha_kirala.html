@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Saha Kirala</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; padding: 40px; display: flex; justify-content: center; }
+        .booking-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 450px; }
+        h2 { color: #1a73e8; text-align: center; margin-bottom: 25px; }
+        label { font-weight: bold; color: #555; display: block; margin-top: 15px; }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        .saat-dolu { color: #d32f2f; background-color: #ffebee; font-weight: bold; }
+        .saat-musait { color: #2e7d32; background-color: #e8f5e9; }
+
+        .btn-submit {
+            background: #1a73e8; color: white; border: none; padding: 15px;
+            width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold;
+            font-size: 16px; margin-top: 25px; transition: 0.3s;
+        }
+
+        .btn-submit:hover { background: #1557b0; shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .info-text { font-size: 12px; color: #888; margin-top: 10px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="booking-card">
+        <h2>🏆 Saha Rezervasyonu</h2>
+        <!-- ID ekledik ki JavaScript ile kolayca gönderelim -->
+        <form id="kiralamaFormu" method="POST">
+            <label>Saha Seçin:</label>
+            <!-- onchange eklendi: Seçim değişince GET metoduyla sayfayı yeniler -->
+            <select name="saha_tipi" required onchange="this.form.method='get'; this.form.submit();">
+                <option value="Futbol Sahası" {% if secilen_saha == 'Futbol Sahası' %}selected{% endif %}>Futbol Sahası</option>
+                <option value="Basketbol Sahası" {% if secilen_saha == 'Basketbol Sahası' %}selected{% endif %}>Basketbol Sahası</option>
+                <option value="Tenis Kortu" {% if secilen_saha == 'Tenis Kortu' %}selected{% endif %}>Tenis Kortu (Kort Saha)</option>
+            </select>
+
+            <label>Tarih Seçin:</label>
+            <!-- onchange eklendi: Tarih değişince GET metoduyla sayfayı yeniler -->
+            <input type="date" name="tarih" min="{{ bugun }}" value="{{ secilen_tarih }}" required onchange="this.form.method='get'; this.form.submit();">
+
+            <label>Saat Aralığı:</label>
+            <select name="saat" required>
+                {% for saat in saatler %}
+                    {% if saat in dolu_saatler %}
+                        <option value="{{ saat }}" class="saat-dolu" disabled>
+                            ❌ {{ saat }} (DOLU)
+                        </option>
+                    {% else %}
+                        <option value="{{ saat }}" class="saat-musait">
+                            ✅ {{ saat }} (MÜSAİT)
+                        </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <p class="info-text">* Seçilen tarih ve sahaya göre müsaitlik durumu güncellenir.</p>
+
+            <button type="submit" class="btn-submit" onclick="this.form.method='post';">Rezervasyonu Tamamla</button>
+        </form>
+
+        <div style="text-align: center; margin-top: 15px;">
+            <a href="/uye-paneli/{{ uye_id }}" style="text-decoration: none; color: #1a73e8; font-size: 14px; font-weight: bold;">← Panele Geri Dön</a>
+        </div>
+    </div>
+</body>
+</html>

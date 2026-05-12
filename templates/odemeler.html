@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Datariders - Ödeme Takibi</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; padding: 30px; }
+        .container { max-width: 1200px; margin: auto; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h2 { color: #1a73e8; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #343a40; color: white; }
+        .price-tag { color: #28a745; font-weight: bold; }
+        .total-tag { background: #e8f0fe; padding: 5px 10px; border-radius: 5px; color: #1a73e8; font-weight: 800; }
+        .back-btn { text-decoration: none; color: #666; font-size: 14px; display: inline-block; margin-bottom: 15px; }
+
+        /* Ödeme Durumu Rozetleri */
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .badge-paid {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #2e7d32;
+        }
+        .badge-unpaid {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #c62828;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/yonetim-merkezi" class="back-btn">⬅ Panele Dön</a>
+        <div class="card">
+            <h2>💰 Üye Ödeme Takip Çizelgesi</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Üye Ad Soyad</th>
+                        <th>Seçili Paket / Ücret</th>
+                        <th>Ders Ücreti</th>
+                        <th>Toplam Borç</th>
+                        <th style="text-align: center;">Ödeme Durumu</th> <!-- Yeni Sütun -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for o in odemeler %}
+                    <tr>
+                        <td><strong>{{ o['Ad_Soyad'] }}</strong></td>
+                        <td>{{ o['Paket'] }} <br> <span class="price-tag">{{ o['Paket_Ucret'] }} TL</span></td>
+                        <td><span class="price-tag">{{ o['Ders_Ucret'] }} TL</span></td>
+                        <td><span class="total-tag">{{ o['Toplam'] }} TL</span></td>
+                        <td style="text-align: center;">
+                            {% if o['Durum'] == 'Ödendi' %}
+                                <span class="badge badge-paid">✅ Ödendi</span>
+                            {% else %}
+                                <span class="badge badge-unpaid">❌ Ödenmedi</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% if not odemeler %}
+                <p style="text-align: center; color: #888; margin-top: 20px;">Henüz ödeme bilgisi bulunmamaktadır.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

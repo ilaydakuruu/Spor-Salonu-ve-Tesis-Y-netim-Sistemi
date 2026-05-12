@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Datariders - Ders Yönetimi</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; padding: 30px; }
+        .container { max-width: 1000px; margin: auto; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        h2 { color: #1a73e8; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        input { padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%; box-sizing: border-box; }
+        .btn-ekle { background: #28a745; color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #343a40; color: white; }
+        .btn-sil { background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; text-decoration: none; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/yonetim-merkezi" style="text-decoration: none; color: #666;">⬅ Panele Dön</a>
+
+        <div class="card">
+            <h2>➕ Yeni Ders Ekle</h2>
+            <form action="/yonetim-merkezi/ders-ekle" method="POST">
+                <div class="form-grid">
+                    <input type="text" name="ders_adi" placeholder="Ders Adi" required>
+                    <input type="text" name="hoca_adi" placeholder="Hoca Adi" required>
+                    <input type="number" name="ucret" placeholder="Ekstra Ucret (TL)" required>
+                    <input type="date" name="tarih" required>
+                    <input type="time" name="saat" required>
+                    <input type="number" name="kontenjan" placeholder="Kontenjan" required>
+                </div>
+                <button type="submit" class="btn-ekle">Dersi Sisteme Kaydet</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>📚 Mevcut Dersler</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ders</th>
+                        <th>Hoca</th>
+                        <th>Ucret</th>
+                        <th>Tarih/Saat</th>
+                        <th>Kontenjan</th>
+                        <th>Islem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in dersler %}
+                    <tr>
+                        <td><strong>{{ d['Ders_Adi'] }}</strong></td>
+                        <td>{{ d['Hoca_Adi'] }}</td>
+                        <td>{{ d['Ucret'] }} TL</td>
+                        <td>{{ d['Ders_Tarihi'] }} - {{ d['Ders_Saati'] }}</td>
+                        <td>{{ d['Kontenjan'] }} Kisi</td>
+                        <td>
+                            <a href="/yonetim-merkezi/ders-sil/{{ d['Id'] }}" class="btn-sil" onclick="return confirm('Silmek istediginize emin misiniz?')">Sil</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
